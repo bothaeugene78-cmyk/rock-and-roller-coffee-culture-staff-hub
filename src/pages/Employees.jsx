@@ -89,6 +89,14 @@ export default function Employees() {
   const activeCount = employees.filter(e => e.employment_status !== "Terminated").length;
   const terminatedCount = employees.filter(e => e.employment_status === "Terminated").length;
 
+  const sendWhatsApp = () => {
+    const appUrl = window.location.origin;
+    const registrationLink = `${appUrl}/employee-registration`;
+    const message = `Hi! 👋 Please complete your employee registration using the link below:\n\n📝 *Registration Form:*\n${registrationLink}\n\n📱 *Download the App:*\nOn your phone, open the link above in your browser, then tap the menu and select "Add to Home Screen" to install the app.`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50">
       {/* Header */}
