@@ -100,12 +100,21 @@ export default function Employees() {
               {activeCount} active · {terminatedCount} terminated
             </p>
           </div>
-          <Button
-            onClick={() => { setEditTarget(null); setShowForm(true); }}
-            className="bg-gray-900 hover:bg-gray-700 text-white rounded-xl text-sm gap-2"
-          >
-            <Plus className="w-4 h-4" /> Add Employee
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={exportToExcel}
+              className="rounded-xl text-sm gap-2 border-gray-200"
+            >
+              <Download className="w-4 h-4" /> Export to Excel
+            </Button>
+            <Button
+              onClick={() => { setEditTarget(null); setShowForm(true); }}
+              className="bg-gray-900 hover:bg-gray-700 text-white rounded-xl text-sm gap-2"
+            >
+              <Plus className="w-4 h-4" /> Add Employee
+            </Button>
+          </div>
         </div>
       </div>
 
