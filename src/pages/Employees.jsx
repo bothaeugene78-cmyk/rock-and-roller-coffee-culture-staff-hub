@@ -60,6 +60,32 @@ export default function Employees() {
     load();
   };
 
+  const exportToExcel = () => {
+    const rows = employees.map(e => ({
+      "First Name": e.name,
+      "Surname": e.surname,
+      "ID Number": e.id_number,
+      "Contact Number": e.contact_number,
+      "Residential Address": e.residential_address,
+      "Start Date": e.start_date,
+      "Leave Days Due": e.leave_days_due,
+      "Bank Name": e.bank_name,
+      "Branch Code": e.branch_code,
+      "Account Number": e.account_number,
+      "IT Number": e.it_number,
+      "Next of Kin Name": e.next_of_kin_name,
+      "Next of Kin Relationship": e.next_of_kin_relationship,
+      "Next of Kin Contact": e.next_of_kin_contact,
+      "Employment Status": e.employment_status,
+      "Termination Date": e.termination_date,
+      "Termination Reason": e.termination_reason,
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Employees");
+    XLSX.writeFile(wb, "employees.xlsx");
+  };
+
   const activeCount = employees.filter(e => e.employment_status !== "Terminated").length;
   const terminatedCount = employees.filter(e => e.employment_status === "Terminated").length;
 
