@@ -47,14 +47,14 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Employees from './pages/Employees';
 import EmployeeRegistration from './pages/EmployeeRegistration';
+import Employees from './pages/Employees';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Employees": Employees,
     "EmployeeRegistration": EmployeeRegistration,
+    "Employees": Employees,
 }
 
 export const pagesConfig = {

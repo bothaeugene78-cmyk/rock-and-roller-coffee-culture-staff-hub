@@ -12,7 +12,7 @@ export default function Layout({ children, currentPageName }) {
               <img
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a8173b9d6e974c0fe109b4/464f7be35_Screenshot_20260304_133520_Gallery.jpg"
                 alt="Medfood Logo"
-                className="h-9 w-auto"
+                className="h-14 w-auto"
               />
             </Link>
           </div>
