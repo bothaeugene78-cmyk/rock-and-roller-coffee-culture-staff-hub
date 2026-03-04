@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Users } from "lucide-react";
 
 export default function Layout({ children, currentPageName }) {
   return (
