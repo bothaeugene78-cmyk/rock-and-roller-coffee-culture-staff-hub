@@ -108,7 +108,14 @@ export default function Employees() {
               {activeCount} active · {terminatedCount} terminated
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              onClick={sendWhatsApp}
+              className="rounded-xl text-sm gap-2 border-gray-200 text-green-600 hover:text-green-700 hover:border-green-300"
+            >
+              <Share2 className="w-4 h-4" /> Invite via WhatsApp
+            </Button>
             <Button
               variant="outline"
               onClick={exportToExcel}
