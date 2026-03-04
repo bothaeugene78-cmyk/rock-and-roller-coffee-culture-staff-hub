@@ -1,193 +1,234 @@
 import { useState } from "react";
-import { User, Briefcase, Building2, Receipt, Heart, ShieldAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import SectionCard from "./SectionCard";
-import FieldRow from "./FieldRow";
+import { Label } from "@/components/ui/label";
 
-const BANKS = [
-  "ABSA", "Capitec", "FNB", "Nedbank", "Standard Bank",
-  "African Bank", "Investec", "TymeBank", "Discovery Bank", "Other"
-];
+const BANKS = ["FNB", "ABSA", "Standard Bank", "Nedbank", "Capitec", "Other"];
+const RELATIONSHIPS = ["Spouse", "Parent", "Sibling", "Partner", "Other"];
+const TERMINATION_REASONS = ["Resigned", "Retrenched", "Dismissed", "Contract Ended"];
 
-const RELATIONSHIPS = ["Spouse", "Parent", "Child", "Sibling", "Friend", "Other"];
-
-const TERMINATION_REASONS = [
-  "Resignation", "Retrenchment", "Dismissal", "Contract End",
-  "Retirement", "Death", "Other"
-];
-
-function TextInput({ value, onChange, placeholder, type = "text", required }) {
+function Section({ number, title, children }) {
   return (
-    <Input
-      type={type}
-      value={value || ""}
-      onChange={e => onChange(e.target.value)}
-      placeholder={placeholder}
-      required={required}
-      className="h-9 text-sm border-gray-200 focus:border-gray-400 focus:ring-0 rounded-lg"
-    />
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/60 flex items-center gap-3">
+        <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
+          {number}
+        </span>
+        <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
+      </div>
+      <div className="p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {children}
+        </div>
+      </div>
+    </div>
   );
 }
 
+function Field({ label, required, full, children }) {
+  return (
+    <div className={`flex flex-col gap-1.5 ${full ? "sm:col-span-2" : ""}`}>
+      <Label className="text-xs font-medium text-gray-500">
+        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
+      </Label>
+      {children}
+    </div>
+  );
+}
+
+const inputCls = "h-10 text-sm border-gray-200 rounded-xl focus:border-gray-400 focus:ring-0 bg-gray-50/40 focus:bg-white transition-colors";
+const selectTriggerCls = "h-10 text-sm border-gray-200 rounded-xl bg-gray-50/40";
+
 export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading }) {
   const [form, setForm] = useState({
-    name: "", surname: "", id_number: "", residential_address: "",
-    contact_number: "", start_date: "", leave_days_due: 15,
-    bank_name: "", branch_code: "", account_number: "", it_number: "",
-    next_of_kin_name: "", next_of_kin_relationship: "", next_of_kin_contact: "",
-    employment_status: "Active", termination_date: "", termination_reason: "",
-    ...initial
+    name: "",
+    surname: "",
+    id_number: "",
+    residential_address: "",
+    contact_number: "",
+    start_date: "",
+    leave_days_due: 15,
+    bank_name: "",
+    branch_code: "",
+    account_number: "",
+    it_number: "",
+    next_of_kin_name: "",
+    next_of_kin_relationship: "",
+    next_of_kin_contact: "",
+    employment_status: "Active",
+    termination_date: "",
+    termination_reason: "",
+    ...initial,
   });
 
-  const set = (key) => (val) => setForm(f => ({ ...f, [key]: val }));
-  const setInput = (key) => (val) => setForm(f => ({ ...f, [key]: val }));
+  const set = (key) => (value) => setForm((f) => ({ ...f, [key]: value }));
+  const setEv = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(form);
   };
 
+  const isTerminated = form.employment_status === "Terminated";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Personal Info */}
-      <SectionCard title="Personal Information" icon={User}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FieldRow label="First Name" required>
-            <TextInput value={form.name} onChange={set("name")} placeholder="John" required />
-          </FieldRow>
-          <FieldRow label="Surname" required>
-            <TextInput value={form.surname} onChange={set("surname")} placeholder="Doe" required />
-          </FieldRow>
-          <FieldRow label="ID Number (13 digits)" required>
-            <TextInput value={form.id_number} onChange={set("id_number")} placeholder="0000000000000" required />
-          </FieldRow>
-          <FieldRow label="Contact Number" required>
-            <TextInput value={form.contact_number} onChange={set("contact_number")} placeholder="0821234567" required />
-          </FieldRow>
-          <div className="sm:col-span-2">
-            <FieldRow label="Residential Address">
-              <Textarea
-                value={form.residential_address || ""}
-                onChange={e => set("residential_address")(e.target.value)}
-                placeholder="123 Main Street, Suburb, City, 0000"
-                rows={2}
-                className="text-sm border-gray-200 focus:border-gray-400 focus:ring-0 rounded-lg resize-none"
-              />
-            </FieldRow>
+    <form onSubmit={handleSubmit} className="space-y-4">
+
+      {/* Section 1: Personal Details */}
+      <Section number="1" title="Personal Details">
+        <Field label="Full Name" required>
+          <Input className={inputCls} value={form.name} onChange={setEv("name")} placeholder="John" required />
+        </Field>
+        <Field label="Surname" required>
+          <Input className={inputCls} value={form.surname} onChange={setEv("surname")} placeholder="Doe" required />
+        </Field>
+        <Field label="SA ID Number (13 digits)" required>
+          <Input
+            className={inputCls}
+            value={form.id_number}
+            onChange={setEv("id_number")}
+            placeholder="0000000000000"
+            maxLength={13}
+            pattern="\d{13}"
+            title="Must be exactly 13 digits"
+            required
+          />
+        </Field>
+        <Field label="Contact Number" required>
+          <Input className={inputCls} type="tel" value={form.contact_number} onChange={setEv("contact_number")} placeholder="082 123 4567" required />
+        </Field>
+        <Field label="Residential Address" full>
+          <Textarea
+            value={form.residential_address}
+            onChange={setEv("residential_address")}
+            placeholder="123 Main Street, Suburb, City, 0000"
+            rows={2}
+            className="text-sm border-gray-200 rounded-xl bg-gray-50/40 focus:bg-white focus:border-gray-400 focus:ring-0 transition-colors resize-none"
+          />
+        </Field>
+      </Section>
+
+      {/* Section 2: Employment */}
+      <Section number="2" title="Employment">
+        <Field label="Start Date" required>
+          <Input className={inputCls} type="date" value={form.start_date} onChange={setEv("start_date")} required />
+        </Field>
+        <Field label="Leave Days Due">
+          <Input
+            className={inputCls}
+            type="number"
+            min={0}
+            value={form.leave_days_due}
+            onChange={(e) => setForm((f) => ({ ...f, leave_days_due: Number(e.target.value) }))}
+            placeholder="15"
+          />
+        </Field>
+      </Section>
+
+      {/* Section 3: Banking Details */}
+      <Section number="3" title="Banking Details">
+        <Field label="Bank Name">
+          <Select value={form.bank_name} onValueChange={set("bank_name")}>
+            <SelectTrigger className={selectTriggerCls}>
+              <SelectValue placeholder="Select bank…" />
+            </SelectTrigger>
+            <SelectContent>
+              {BANKS.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field label="Branch Code">
+          <Input className={inputCls} type="number" value={form.branch_code} onChange={setEv("branch_code")} placeholder="250655" />
+        </Field>
+        <Field label="Account Number">
+          <Input className={inputCls} type="number" value={form.account_number} onChange={setEv("account_number")} placeholder="00000000000" />
+        </Field>
+      </Section>
+
+      {/* Section 4: Tax */}
+      <Section number="4" title="Tax (Optional)">
+        <Field label="SARS IT Number">
+          <Input className={inputCls} type="number" value={form.it_number} onChange={setEv("it_number")} placeholder="IT000000000" />
+        </Field>
+      </Section>
+
+      {/* Section 5: Emergency Contact */}
+      <Section number="5" title="Emergency Contact">
+        <Field label="Next of Kin Name">
+          <Input className={inputCls} value={form.next_of_kin_name} onChange={setEv("next_of_kin_name")} placeholder="Jane Doe" />
+        </Field>
+        <Field label="Relationship">
+          <Select value={form.next_of_kin_relationship} onValueChange={set("next_of_kin_relationship")}>
+            <SelectTrigger className={selectTriggerCls}>
+              <SelectValue placeholder="Select…" />
+            </SelectTrigger>
+            <SelectContent>
+              {RELATIONSHIPS.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field label="Contact Number">
+          <Input className={inputCls} type="tel" value={form.next_of_kin_contact} onChange={setEv("next_of_kin_contact")} placeholder="082 987 6543" />
+        </Field>
+      </Section>
+
+      {/* Section 6: Status Management */}
+      <Section number="6" title="Status Management">
+        <Field label="Employment Status" full>
+          <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+            {["Active", "Terminated"].map((status) => (
+              <button
+                key={status}
+                type="button"
+                onClick={() => set("employment_status")(status)}
+                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  form.employment_status === status
+                    ? status === "Active"
+                      ? "bg-emerald-500 text-white shadow-sm"
+                      : "bg-rose-500 text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
           </div>
-        </div>
-      </SectionCard>
+        </Field>
 
-      {/* Employment */}
-      <SectionCard title="Employment" icon={Briefcase}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FieldRow label="Start Date" required>
-            <TextInput type="date" value={form.start_date} onChange={set("start_date")} required />
-          </FieldRow>
-          <FieldRow label="Leave Days Due">
-            <TextInput type="number" value={form.leave_days_due} onChange={val => setForm(f => ({ ...f, leave_days_due: Number(val) }))} placeholder="15" />
-          </FieldRow>
-        </div>
-      </SectionCard>
+        {isTerminated && (
+          <>
+            <Field label="Termination Date">
+              <Input className={inputCls} type="date" value={form.termination_date} onChange={setEv("termination_date")} />
+            </Field>
+            <Field label="Termination Reason">
+              <Select value={form.termination_reason} onValueChange={set("termination_reason")}>
+                <SelectTrigger className={selectTriggerCls}>
+                  <SelectValue placeholder="Select reason…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TERMINATION_REASONS.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </Field>
+          </>
+        )}
+      </Section>
 
-      {/* Banking */}
-      <SectionCard title="Banking Details" icon={Building2}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <FieldRow label="Bank Name">
-            <Select value={form.bank_name || ""} onValueChange={set("bank_name")}>
-              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
-                <SelectValue placeholder="Select bank" />
-              </SelectTrigger>
-              <SelectContent>
-                {BANKS.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </FieldRow>
-          <FieldRow label="Branch Code">
-            <TextInput value={form.branch_code} onChange={set("branch_code")} placeholder="051001" />
-          </FieldRow>
-          <FieldRow label="Account Number">
-            <TextInput value={form.account_number} onChange={set("account_number")} placeholder="000000000" />
-          </FieldRow>
-        </div>
-      </SectionCard>
-
-      {/* Tax */}
-      <SectionCard title="Tax" icon={Receipt}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-sm">
-          <FieldRow label="SARS IT Number (optional)">
-            <TextInput value={form.it_number} onChange={set("it_number")} placeholder="IT000000000" />
-          </FieldRow>
-        </div>
-      </SectionCard>
-
-      {/* Next of Kin */}
-      <SectionCard title="Next of Kin" icon={Heart}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <FieldRow label="Full Name">
-            <TextInput value={form.next_of_kin_name} onChange={set("next_of_kin_name")} placeholder="Jane Doe" />
-          </FieldRow>
-          <FieldRow label="Relationship">
-            <Select value={form.next_of_kin_relationship || ""} onValueChange={set("next_of_kin_relationship")}>
-              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                {RELATIONSHIPS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </FieldRow>
-          <FieldRow label="Contact Number">
-            <TextInput value={form.next_of_kin_contact} onChange={set("next_of_kin_contact")} placeholder="0821234567" />
-          </FieldRow>
-        </div>
-      </SectionCard>
-
-      {/* Status */}
-      <SectionCard title="Employment Status" icon={ShieldAlert}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <FieldRow label="Status">
-            <Select value={form.employment_status} onValueChange={set("employment_status")}>
-              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Terminated">Terminated</SelectItem>
-              </SelectContent>
-            </Select>
-          </FieldRow>
-          {form.employment_status === "Terminated" && (
-            <>
-              <FieldRow label="Termination Date">
-                <TextInput type="date" value={form.termination_date} onChange={set("termination_date")} />
-              </FieldRow>
-              <FieldRow label="Termination Reason">
-                <Select value={form.termination_reason || ""} onValueChange={set("termination_reason")}>
-                  <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
-                    <SelectValue placeholder="Select reason" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TERMINATION_REASONS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </FieldRow>
-            </>
-          )}
-        </div>
-      </SectionCard>
-
+      {/* Actions */}
       <div className="flex justify-end gap-3 pt-2">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl text-sm">
+          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl text-sm px-5">
             Cancel
           </Button>
         )}
-        <Button type="submit" disabled={loading} className="rounded-xl text-sm bg-gray-900 hover:bg-gray-700 text-white px-6">
-          {loading ? "Saving…" : "Save Employee"}
+        <Button
+          type="submit"
+          disabled={loading}
+          className="rounded-xl text-sm px-6 bg-gray-900 hover:bg-gray-700 text-white"
+        >
+          {loading ? "Saving…" : initial?.id ? "Update Employee" : "Register Employee"}
         </Button>
       </div>
     </form>
