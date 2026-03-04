@@ -1,166 +1,193 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { User, Briefcase, Building2, Receipt, Heart, ShieldAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Briefcase, Landmark, FileText, Heart, ShieldCheck, X, Save } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import SectionCard from "./SectionCard";
+import FieldRow from "./FieldRow";
 
-const Section = ({ icon: Icon, title, children }) => (
-  <Card className="border-0 shadow-sm">
-    <CardHeader className="pb-3">
-      <CardTitle className="text-sm font-semibold text-slate-600 flex items-center gap-2">
-        <Icon className="w-4 h-4 text-slate-400" />
-        {title}
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {children}
-    </CardContent>
-  </Card>
-);
+const BANKS = [
+  "ABSA", "Capitec", "FNB", "Nedbank", "Standard Bank",
+  "African Bank", "Investec", "TymeBank", "Discovery Bank", "Other"
+];
 
-const Field = ({ label, required, children }) => (
-  <div className="space-y-1.5">
-    <Label className="text-xs font-medium text-slate-500">
-      {label} {required && <span className="text-rose-400">*</span>}
-    </Label>
-    {children}
-  </div>
-);
+const RELATIONSHIPS = ["Spouse", "Parent", "Child", "Sibling", "Friend", "Other"];
 
-export default function EmployeeForm({ employee, onSave, onCancel, isSaving }) {
+const TERMINATION_REASONS = [
+  "Resignation", "Retrenchment", "Dismissal", "Contract End",
+  "Retirement", "Death", "Other"
+];
+
+function TextInput({ value, onChange, placeholder, type = "text", required }) {
+  return (
+    <Input
+      type={type}
+      value={value || ""}
+      onChange={e => onChange(e.target.value)}
+      placeholder={placeholder}
+      required={required}
+      className="h-9 text-sm border-gray-200 focus:border-gray-400 focus:ring-0 rounded-lg"
+    />
+  );
+}
+
+export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading }) {
   const [form, setForm] = useState({
-    name: "",
-    surname: "",
-    id_number: "",
-    residential_address: "",
-    contact_number: "",
-    start_date: "",
-    leave_days_due: 15,
-    bank_name: "",
-    branch_code: "",
-    account_number: "",
-    it_number: "",
-    next_of_kin_name: "",
-    next_of_kin_relationship: "",
-    next_of_kin_contact: "",
-    employment_status: "Active",
-    termination_date: "",
-    termination_reason: "",
-    ...employee,
+    name: "", surname: "", id_number: "", residential_address: "",
+    contact_number: "", start_date: "", leave_days_due: 15,
+    bank_name: "", branch_code: "", account_number: "", it_number: "",
+    next_of_kin_name: "", next_of_kin_relationship: "", next_of_kin_contact: "",
+    employment_status: "Active", termination_date: "", termination_reason: "",
+    ...initial
   });
 
-  const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
+  const set = (key) => (val) => setForm(f => ({ ...f, [key]: val }));
+  const setInput = (key) => (val) => setForm(f => ({ ...f, [key]: val }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { ...form };
-    if (data.leave_days_due === "" || data.leave_days_due === undefined) data.leave_days_due = 15;
-    else data.leave_days_due = Number(data.leave_days_due);
-    // Clean up empty optional fields
-    if (!data.termination_date) delete data.termination_date;
-    if (!data.termination_reason) delete data.termination_reason;
-    if (!data.it_number) delete data.it_number;
-    onSave(data);
+    onSubmit(form);
   };
-
-  const inputClass = "h-10 bg-slate-50/50 border-slate-200 focus:bg-white transition-colors";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <Section icon={User} title="Personal Information">
-        <Field label="Name" required>
-          <Input className={inputClass} value={form.name} onChange={(e) => update("name", e.target.value)} required />
-        </Field>
-        <Field label="Surname" required>
-          <Input className={inputClass} value={form.surname} onChange={(e) => update("surname", e.target.value)} required />
-        </Field>
-        <Field label="ID Number (13 digits)" required>
-          <Input className={inputClass} value={form.id_number} onChange={(e) => update("id_number", e.target.value)} maxLength={13} required />
-        </Field>
-        <Field label="Contact Number" required>
-          <Input className={inputClass} value={form.contact_number} onChange={(e) => update("contact_number", e.target.value)} required />
-        </Field>
-        <div className="md:col-span-2">
-          <Field label="Residential Address">
-            <Textarea className="bg-slate-50/50 border-slate-200 focus:bg-white transition-colors min-h-[60px]" value={form.residential_address} onChange={(e) => update("residential_address", e.target.value)} />
-          </Field>
+      {/* Personal Info */}
+      <SectionCard title="Personal Information" icon={User}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FieldRow label="First Name" required>
+            <TextInput value={form.name} onChange={set("name")} placeholder="John" required />
+          </FieldRow>
+          <FieldRow label="Surname" required>
+            <TextInput value={form.surname} onChange={set("surname")} placeholder="Doe" required />
+          </FieldRow>
+          <FieldRow label="ID Number (13 digits)" required>
+            <TextInput value={form.id_number} onChange={set("id_number")} placeholder="0000000000000" required />
+          </FieldRow>
+          <FieldRow label="Contact Number" required>
+            <TextInput value={form.contact_number} onChange={set("contact_number")} placeholder="0821234567" required />
+          </FieldRow>
+          <div className="sm:col-span-2">
+            <FieldRow label="Residential Address">
+              <Textarea
+                value={form.residential_address || ""}
+                onChange={e => set("residential_address")(e.target.value)}
+                placeholder="123 Main Street, Suburb, City, 0000"
+                rows={2}
+                className="text-sm border-gray-200 focus:border-gray-400 focus:ring-0 rounded-lg resize-none"
+              />
+            </FieldRow>
+          </div>
         </div>
-      </Section>
+      </SectionCard>
 
-      <Section icon={Briefcase} title="Employment Details">
-        <Field label="Start Date" required>
-          <Input type="date" className={inputClass} value={form.start_date} onChange={(e) => update("start_date", e.target.value)} required />
-        </Field>
-        <Field label="Leave Days Due">
-          <Input type="number" className={inputClass} value={form.leave_days_due} onChange={(e) => update("leave_days_due", e.target.value)} min={0} />
-        </Field>
-      </Section>
+      {/* Employment */}
+      <SectionCard title="Employment" icon={Briefcase}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FieldRow label="Start Date" required>
+            <TextInput type="date" value={form.start_date} onChange={set("start_date")} required />
+          </FieldRow>
+          <FieldRow label="Leave Days Due">
+            <TextInput type="number" value={form.leave_days_due} onChange={val => setForm(f => ({ ...f, leave_days_due: Number(val) }))} placeholder="15" />
+          </FieldRow>
+        </div>
+      </SectionCard>
 
-      <Section icon={Landmark} title="Banking Details">
-        <Field label="Bank Name">
-          <Input className={inputClass} value={form.bank_name} onChange={(e) => update("bank_name", e.target.value)} />
-        </Field>
-        <Field label="Branch Code">
-          <Input className={inputClass} value={form.branch_code} onChange={(e) => update("branch_code", e.target.value)} />
-        </Field>
-        <Field label="Account Number">
-          <Input className={inputClass} value={form.account_number} onChange={(e) => update("account_number", e.target.value)} />
-        </Field>
-      </Section>
+      {/* Banking */}
+      <SectionCard title="Banking Details" icon={Building2}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <FieldRow label="Bank Name">
+            <Select value={form.bank_name || ""} onValueChange={set("bank_name")}>
+              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
+                <SelectValue placeholder="Select bank" />
+              </SelectTrigger>
+              <SelectContent>
+                {BANKS.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </FieldRow>
+          <FieldRow label="Branch Code">
+            <TextInput value={form.branch_code} onChange={set("branch_code")} placeholder="051001" />
+          </FieldRow>
+          <FieldRow label="Account Number">
+            <TextInput value={form.account_number} onChange={set("account_number")} placeholder="000000000" />
+          </FieldRow>
+        </div>
+      </SectionCard>
 
-      <Section icon={FileText} title="Tax Information">
-        <Field label="IT Number (SARS) — Optional">
-          <Input className={inputClass} value={form.it_number} onChange={(e) => update("it_number", e.target.value)} placeholder="Optional" />
-        </Field>
-      </Section>
+      {/* Tax */}
+      <SectionCard title="Tax" icon={Receipt}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-sm">
+          <FieldRow label="SARS IT Number (optional)">
+            <TextInput value={form.it_number} onChange={set("it_number")} placeholder="IT000000000" />
+          </FieldRow>
+        </div>
+      </SectionCard>
 
-      <Section icon={Heart} title="Next of Kin">
-        <Field label="Full Name">
-          <Input className={inputClass} value={form.next_of_kin_name} onChange={(e) => update("next_of_kin_name", e.target.value)} />
-        </Field>
-        <Field label="Relationship">
-          <Input className={inputClass} value={form.next_of_kin_relationship} onChange={(e) => update("next_of_kin_relationship", e.target.value)} />
-        </Field>
-        <Field label="Contact Number">
-          <Input className={inputClass} value={form.next_of_kin_contact} onChange={(e) => update("next_of_kin_contact", e.target.value)} />
-        </Field>
-      </Section>
+      {/* Next of Kin */}
+      <SectionCard title="Next of Kin" icon={Heart}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <FieldRow label="Full Name">
+            <TextInput value={form.next_of_kin_name} onChange={set("next_of_kin_name")} placeholder="Jane Doe" />
+          </FieldRow>
+          <FieldRow label="Relationship">
+            <Select value={form.next_of_kin_relationship || ""} onValueChange={set("next_of_kin_relationship")}>
+              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                {RELATIONSHIPS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </FieldRow>
+          <FieldRow label="Contact Number">
+            <TextInput value={form.next_of_kin_contact} onChange={set("next_of_kin_contact")} placeholder="0821234567" />
+          </FieldRow>
+        </div>
+      </SectionCard>
 
-      <Section icon={ShieldCheck} title="Status Control">
-        <Field label="Employment Status">
-          <Select value={form.employment_status} onValueChange={(v) => update("employment_status", v)}>
-            <SelectTrigger className={inputClass}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Active">Active</SelectItem>
-              <SelectItem value="Terminated">Terminated</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
-        {form.employment_status === "Terminated" && (
-          <>
-            <Field label="Termination Date">
-              <Input type="date" className={inputClass} value={form.termination_date} onChange={(e) => update("termination_date", e.target.value)} />
-            </Field>
-            <div className="md:col-span-2">
-              <Field label="Termination Reason">
-                <Textarea className="bg-slate-50/50 border-slate-200 focus:bg-white transition-colors min-h-[60px]" value={form.termination_reason} onChange={(e) => update("termination_reason", e.target.value)} />
-              </Field>
-            </div>
-          </>
+      {/* Status */}
+      <SectionCard title="Employment Status" icon={ShieldAlert}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <FieldRow label="Status">
+            <Select value={form.employment_status} onValueChange={set("employment_status")}>
+              <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Active">Active</SelectItem>
+                <SelectItem value="Terminated">Terminated</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldRow>
+          {form.employment_status === "Terminated" && (
+            <>
+              <FieldRow label="Termination Date">
+                <TextInput type="date" value={form.termination_date} onChange={set("termination_date")} />
+              </FieldRow>
+              <FieldRow label="Termination Reason">
+                <Select value={form.termination_reason || ""} onValueChange={set("termination_reason")}>
+                  <SelectTrigger className="h-9 text-sm border-gray-200 rounded-lg">
+                    <SelectValue placeholder="Select reason" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TERMINATION_REASONS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </FieldRow>
+            </>
+          )}
+        </div>
+      </SectionCard>
+
+      <div className="flex justify-end gap-3 pt-2">
+        {onCancel && (
+          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl text-sm">
+            Cancel
+          </Button>
         )}
-      </Section>
-
-      <div className="flex items-center justify-end gap-3 pt-2">
-        <Button type="button" variant="outline" onClick={onCancel} className="px-5">
-          <X className="w-4 h-4 mr-1.5" /> Cancel
-        </Button>
-        <Button type="submit" disabled={isSaving} className="px-5 bg-slate-800 hover:bg-slate-900">
-          <Save className="w-4 h-4 mr-1.5" /> {employee ? "Update Employee" : "Add Employee"}
+        <Button type="submit" disabled={loading} className="rounded-xl text-sm bg-gray-900 hover:bg-gray-700 text-white px-6">
+          {loading ? "Saving…" : "Save Employee"}
         </Button>
       </div>
     </form>
