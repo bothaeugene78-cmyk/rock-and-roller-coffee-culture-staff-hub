@@ -46,7 +46,7 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-16">
             <Link to={createPageUrl(isAdmin ? "AdminDashboard" : "EmployeeDashboard")} className="flex items-center">
               <img
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a8173b9d6e974c0fe109b4/464f7be35_Screenshot_20260304_133520_Gallery.jpg"
+                src="https://media.base44.com/images/public/69b1823539c8b554225e2ca7/89b319103_Screenshot_20260311_174710_Google.jpg"
                 alt="Rock and Roller Logo"
                 className="h-14 w-auto"
               />
