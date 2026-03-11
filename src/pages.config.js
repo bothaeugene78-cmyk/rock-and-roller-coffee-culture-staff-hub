@@ -49,12 +49,14 @@
  */
 import EmployeeRegistration from './pages/EmployeeRegistration';
 import Employees from './pages/Employees';
+import LabourLaw from './pages/LabourLaw';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "EmployeeRegistration": EmployeeRegistration,
     "Employees": Employees,
+    "LabourLaw": LabourLaw,
 }
 
 export const pagesConfig = {
