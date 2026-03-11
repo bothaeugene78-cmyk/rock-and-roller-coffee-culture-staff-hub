@@ -51,6 +51,7 @@ import EmployeeRegistration from './pages/EmployeeRegistration';
 import Employees from './pages/Employees';
 import LabourLaw from './pages/LabourLaw';
 import EmployeeDashboard from './pages/EmployeeDashboard';
+import LabourLawAssistant from './pages/LabourLawAssistant';
 import __Layout from './Layout.jsx';
 
 
@@ -59,6 +60,7 @@ export const PAGES = {
     "Employees": Employees,
     "LabourLaw": LabourLaw,
     "EmployeeDashboard": EmployeeDashboard,
+    "LabourLawAssistant": LabourLawAssistant,
 }
 
 export const pagesConfig = {
