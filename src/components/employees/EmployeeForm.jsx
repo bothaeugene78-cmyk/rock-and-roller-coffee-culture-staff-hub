@@ -11,12 +11,12 @@ const TERMINATION_REASONS = ["Resigned", "Retrenched", "Dismissed", "Contract En
 
 function Section({ number, title, children }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/60 flex items-center gap-3">
-        <span className="w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center shrink-0">
+    <div className="bg-zinc-800/50 rounded-2xl border border-zinc-700 overflow-hidden">
+      <div className="px-6 py-4 border-b border-zinc-700 bg-zinc-800 flex items-center gap-3">
+        <span className="w-6 h-6 rounded-full bg-red-600 text-white text-xs font-bold flex items-center justify-center shrink-0">
           {number}
         </span>
-        <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
+        <h3 className="text-sm font-semibold text-zinc-200">{title}</h3>
       </div>
       <div className="p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -30,16 +30,16 @@ function Section({ number, title, children }) {
 function Field({ label, required, full, children }) {
   return (
     <div className={`flex flex-col gap-1.5 ${full ? "sm:col-span-2" : ""}`}>
-      <Label className="text-xs font-medium text-gray-500">
-        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
+      <Label className="text-xs font-medium text-zinc-400">
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
       </Label>
       {children}
     </div>
   );
 }
 
-const inputCls = "h-10 text-sm border-gray-200 rounded-xl focus:border-gray-400 focus:ring-0 bg-gray-50/40 focus:bg-white transition-colors";
-const selectTriggerCls = "h-10 text-sm border-gray-200 rounded-xl bg-gray-50/40";
+const inputCls = "h-10 text-sm border-zinc-700 rounded-xl focus:border-red-600 focus:ring-0 bg-zinc-900 text-white placeholder:text-zinc-600 transition-colors";
+const selectTriggerCls = "h-10 text-sm border-zinc-700 rounded-xl bg-zinc-900 text-white";
 
 export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading }) {
   const [form, setForm] = useState({
