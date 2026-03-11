@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 const BANKS = ["FNB", "ABSA", "Standard Bank", "Nedbank", "Capitec", "Other"];
 const RELATIONSHIPS = ["Spouse", "Parent", "Sibling", "Partner", "Other"];
 const TERMINATION_REASONS = ["Resigned", "Retrenched", "Dismissed", "Contract Ended"];
+const DEPARTMENTS = ["Management", "Operations", "Finance", "HR", "Sales", "Kitchen", "Front of House", "Logistics", "Other"];
 
 function Section({ number, title, children }) {
   return (
@@ -43,12 +44,21 @@ const selectTriggerCls = "h-10 text-sm border-zinc-700 rounded-xl bg-zinc-900 te
 
 export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading }) {
   const [form, setForm] = useState({
+    employee_number: "",
     name: "",
     surname: "",
-    id_number: "",
-    residential_address: "",
+    email: "",
     contact_number: "",
+    id_number: "",
+    department: "",
+    job_title: "",
     start_date: "",
+    work_week_type: "5-day",
+    employment_status: "Active",
+    annual_leave_cycle_start: "",
+    sick_leave_cycle_start: "",
+    custom_annual_leave_days: "",
+    residential_address: "",
     leave_days_due: 15,
     bank_name: "",
     branch_code: "",
@@ -57,7 +67,6 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
     next_of_kin_name: "",
     next_of_kin_relationship: "",
     next_of_kin_contact: "",
-    employment_status: "Active",
     termination_date: "",
     termination_reason: "",
     ...initial,
