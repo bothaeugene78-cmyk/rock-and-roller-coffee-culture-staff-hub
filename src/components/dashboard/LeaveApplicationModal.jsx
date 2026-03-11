@@ -161,6 +161,16 @@ export default function LeaveApplicationModal({ open, onClose, employeeId, balan
       proof_document: form.leave_type === "Family Responsibility" ? docUrl : undefined,
       status: "Pending",
     });
+
+    // Notify manager via email
+    if (managerEmail) {
+      await base44.integrations.Core.SendEmail({
+        to: managerEmail,
+        subject: `Leave Application: ${form.leave_type} Leave — ${employeeName}`,
+        body: `A new leave application has been submitted and is pending your approval.\n\nEmployee: ${employeeName}\nLeave Type: ${form.leave_type}\nStart Date: ${form.start_date}\nEnd Date: ${form.end_date}\nDays Requested: ${days}\nReason: ${form.reason}\n\nPlease log in to the Employee Hub to review and action this request.`,
+      });
+    }
+
     setSaving(false);
     setSuccess(true);
     onSuccess?.();
