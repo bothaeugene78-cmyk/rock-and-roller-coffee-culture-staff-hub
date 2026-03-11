@@ -180,6 +180,7 @@ export default function EmployeeDashboard() {
         open={showLeaveModal}
         onClose={() => setShowLeaveModal(false)}
         employeeId={employee?.id}
+        balance={balance}
         onSuccess={loadData}
       />
     </div>
