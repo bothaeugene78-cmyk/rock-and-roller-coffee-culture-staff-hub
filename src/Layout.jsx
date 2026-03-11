@@ -28,10 +28,20 @@ export default function Layout({ children, currentPageName }) {
                 className="h-14 w-auto"
               />
             </Link>
-            <div className="hidden sm:flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-              <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">Employee Hub</span>
-            </div>
+            <nav className="flex items-center gap-1">
+              <Link
+                to={createPageUrl("Employees")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "Employees" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                Employees
+              </Link>
+              <Link
+                to={createPageUrl("LabourLaw")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "LabourLaw" ? "bg-red-600 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                Labour Law
+              </Link>
+            </nav>
           </div>
         </div>
       </header>
