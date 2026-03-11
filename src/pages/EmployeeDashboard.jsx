@@ -182,6 +182,8 @@ export default function EmployeeDashboard() {
         employeeId={employee?.id}
         balance={balance}
         onSuccess={loadData}
+        employeeName={`${employee?.name || ""} ${employee?.surname || ""}`.trim()}
+        managerEmail={user?.email}
       />
     </div>
   );

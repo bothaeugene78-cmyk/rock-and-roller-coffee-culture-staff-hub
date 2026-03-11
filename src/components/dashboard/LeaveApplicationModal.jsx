@@ -40,7 +40,7 @@ function InfoBox({ color, icon: Icon, children }) {
   );
 }
 
-export default function LeaveApplicationModal({ open, onClose, employeeId, balance, onSuccess }) {
+export default function LeaveApplicationModal({ open, onClose, employeeId, balance, onSuccess, managerEmail, employeeName }) {
   const today = format(new Date(), "yyyy-MM-dd");
   const maxDate = format(addYears(new Date(), 1), "yyyy-MM-dd");
 
