@@ -26,7 +26,33 @@ export default function QASection() {
     setLoading(true);
 
     const answer = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are a South African labour law expert assistant. Answer the following question clearly and simply, as if explaining to an ordinary employee with no legal background. Be practical, cite the relevant Act (BCEA, LRA, EEA, OHSA, etc.) where appropriate, and keep the answer concise (3–6 sentences). Do not give legal advice, but do give useful factual information.
+      prompt: `You are a South African Labour Law expert assistant. Provide accurate information based on the Basic Conditions of Employment Act (BCEA) of 1997 and amendments up to 2024.
+
+KEY FACTS TO KNOW:
+Annual Leave:
+- 21 consecutive days per 12-month leave cycle (15 working days for 5-day week, 18 for 6-day week)
+- Accrues at 1.25 days/month (5-day) or 1.5 days/month (6-day)
+- Must be taken within 6 months after cycle end or forfeited
+- Current cycle + previous cycle only payable on termination
+
+Family Responsibility Leave:
+- 3 days per year (5 days for domestic workers)
+- Only for employees employed longer than 4 months working more than 4 days/week
+- Use-it-or-lose-it: Cannot carry over
+- Valid reasons: Child birth/sickness, death of spouse/life partner/parent/grandparent/child/sibling
+
+Sick Leave:
+- 30 days per 36-month cycle (5-day week) or 36 days (6-day week)
+- First 6 months: 1 day per 26 days worked
+- Cannot be paid out on termination
+- Medical certificate required if absent >2 consecutive days or on Friday+Monday
+
+Other:
+- Maternity leave: 4 months unpaid (UIF applies)
+- Parental leave: 10 consecutive days for fathers/adopting parents
+- Overtime: Maximum 10 hours/week, 1.5x pay or time off
+
+Always cite BCEA sections where relevant. Advise consulting the CCMA or Department of Labour for disputes. Do not provide legal advice — only factual rights and obligations. Answer clearly and simply, as if explaining to an ordinary employee with no legal background. Keep answers concise (3–6 sentences). Current date: 2026-03-11.
 
 Question: ${trimmed}`,
     });
