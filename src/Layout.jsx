@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { base44 } from "@/api/base44Client";
 
 export default function Layout({ children, currentPageName }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => setUser(null));
+  }, []);
+
+  const isAdmin = user?.role === "admin";
+
+  const navLink = (page, label, highlight = false) => (
+    <Link
+      key={page}
+      to={createPageUrl(page)}
+      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+        currentPageName === page
+          ? highlight ? "bg-red-600 text-white" : "bg-zinc-800 text-white"
+          : "text-zinc-500 hover:text-zinc-300"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+
   return (
     <div className="min-h-screen bg-zinc-950">
       <style>{`
@@ -21,44 +44,28 @@ export default function Layout({ children, currentPageName }) {
       <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link to={createPageUrl("Employees")} className="flex items-center">
+            <Link to={createPageUrl(isAdmin ? "AdminDashboard" : "EmployeeDashboard")} className="flex items-center">
               <img
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a8173b9d6e974c0fe109b4/464f7be35_Screenshot_20260304_133520_Gallery.jpg"
-                alt="Medfood Logo"
+                alt="Rock and Roller Logo"
                 className="h-14 w-auto"
               />
             </Link>
             <nav className="flex items-center gap-1">
-              <Link
-                to={createPageUrl("EmployeeDashboard")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "EmployeeDashboard" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
-              >
-                My Dashboard
-              </Link>
-              <Link
-                to={createPageUrl("DataImportExport")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "DataImportExport" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
-              >
-                Import / Export
-              </Link>
-              <Link
-                to={createPageUrl("Employees")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "Employees" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
-              >
-                Employees
-              </Link>
-              <Link
-                to={createPageUrl("LabourLaw")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "LabourLaw" ? "bg-red-600 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
-              >
-                Labour Law
-              </Link>
-              <Link
-                to={createPageUrl("LabourLawAssistant")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "LabourLawAssistant" ? "bg-red-600 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
-              >
-                AI Assistant
-              </Link>
+              {isAdmin ? (
+                <>
+                  {navLink("AdminDashboard", "Dashboard")}
+                  {navLink("Employees", "Employees")}
+                  {navLink("DataImportExport", "Import / Export")}
+                  {navLink("LabourLaw", "Labour Law", true)}
+                  {navLink("LabourLawAssistant", "AI Assistant", true)}
+                </>
+              ) : (
+                <>
+                  {navLink("EmployeeDashboard", "My Dashboard")}
+                  {navLink("LabourLawAssistant", "AI Assistant", true)}
+                </>
+              )}
             </nav>
           </div>
         </div>
