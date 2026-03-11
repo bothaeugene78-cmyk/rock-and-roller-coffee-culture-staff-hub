@@ -36,6 +36,12 @@ export default function Layout({ children, currentPageName }) {
                 My Dashboard
               </Link>
               <Link
+                to={createPageUrl("DataImportExport")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "DataImportExport" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                Import / Export
+              </Link>
+              <Link
                 to={createPageUrl("Employees")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "Employees" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
               >
