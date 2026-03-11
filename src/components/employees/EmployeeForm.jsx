@@ -105,7 +105,7 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
             onChange={setEv("residential_address")}
             placeholder="123 Main Street, Suburb, City, 0000"
             rows={2}
-            className="text-sm border-gray-200 rounded-xl bg-gray-50/40 focus:bg-white focus:border-gray-400 focus:ring-0 transition-colors resize-none"
+            className="text-sm border-zinc-700 rounded-xl bg-zinc-900 text-white placeholder:text-zinc-600 focus:border-red-600 focus:ring-0 transition-colors resize-none"
           />
         </Field>
       </Section>
@@ -177,7 +177,7 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
       {/* Section 6: Status Management */}
       <Section number="6" title="Status Management">
         <Field label="Employment Status" full>
-          <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+          <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-700 rounded-xl p-1 w-fit">
             {["Active", "Terminated"].map((status) => (
               <button
                 key={status}
@@ -186,9 +186,9 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
                   form.employment_status === status
                     ? status === "Active"
-                      ? "bg-emerald-500 text-white shadow-sm"
-                      : "bg-rose-500 text-white shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "bg-red-600 text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-300"
                 }`}
               >
                 {status}
@@ -219,14 +219,14 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
       {/* Actions */}
       <div className="flex justify-end gap-3 pt-2">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl text-sm px-5">
+          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl text-sm px-5 border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white">
             Cancel
           </Button>
         )}
         <Button
           type="submit"
           disabled={loading}
-          className="rounded-xl text-sm px-6 bg-gray-900 hover:bg-gray-700 text-white"
+          className="rounded-xl text-sm px-6 bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/30"
         >
           {loading ? "Saving…" : initial?.id ? "Update Employee" : "Register Employee"}
         </Button>
