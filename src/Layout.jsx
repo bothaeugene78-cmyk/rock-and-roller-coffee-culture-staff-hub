@@ -30,6 +30,12 @@ export default function Layout({ children, currentPageName }) {
             </Link>
             <nav className="flex items-center gap-1">
               <Link
+                to={createPageUrl("EmployeeDashboard")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "EmployeeDashboard" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                My Dashboard
+              </Link>
+              <Link
                 to={createPageUrl("Employees")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "Employees" ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
               >
