@@ -87,23 +87,26 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
 
       {/* Section 1: Personal Details */}
       <Section number="1" title="Personal Details">
+        <Field label="Employee Number">
+          <Input className={inputCls} value={form.employee_number} onChange={setEv("employee_number")} placeholder="EMP001" />
+        </Field>
         <Field label="Full Name" required>
           <Input className={inputCls} value={form.name} onChange={setEv("name")} placeholder="John" required />
         </Field>
         <Field label="Surname" required>
           <Input className={inputCls} value={form.surname} onChange={setEv("surname")} placeholder="Doe" required />
         </Field>
-        <Field label="SA ID Number (13 digits)" required>
+        <Field label="SA ID / Passport Number" required>
           <Input
             className={inputCls}
             value={form.id_number}
             onChange={setEv("id_number")}
             placeholder="0000000000000"
-            maxLength={13}
-            pattern="\d{13}"
-            title="Must be exactly 13 digits"
             required
           />
+        </Field>
+        <Field label="Work Email">
+          <Input className={inputCls} type="email" value={form.email} onChange={setEv("email")} placeholder="john.doe@company.co.za" />
         </Field>
         <Field label="Contact Number" required>
           <Input className={inputCls} type="tel" value={form.contact_number} onChange={setEv("contact_number")} placeholder="082 123 4567" required />
@@ -121,10 +124,44 @@ export default function EmployeeForm({ initial = {}, onSubmit, onCancel, loading
 
       {/* Section 2: Employment */}
       <Section number="2" title="Employment">
+        <Field label="Job Title">
+          <Input className={inputCls} value={form.job_title} onChange={setEv("job_title")} placeholder="e.g. Chef, Manager" />
+        </Field>
+        <Field label="Department">
+          <Select value={form.department} onValueChange={set("department")}>
+            <SelectTrigger className={selectTriggerCls}><SelectValue placeholder="Select department…" /></SelectTrigger>
+            <SelectContent>{DEPARTMENTS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
+          </Select>
+        </Field>
         <Field label="Start Date" required>
           <Input className={inputCls} type="date" value={form.start_date} onChange={setEv("start_date")} required />
         </Field>
-        <Field label="Leave Days Due">
+        <Field label="Work Week Type" required>
+          <Select value={form.work_week_type} onValueChange={set("work_week_type")}>
+            <SelectTrigger className={selectTriggerCls}><SelectValue placeholder="Select…" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5-day">5-day week</SelectItem>
+              <SelectItem value="6-day">6-day week</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field label="Annual Leave Cycle Start" required>
+          <Input className={inputCls} type="date" value={form.annual_leave_cycle_start} onChange={setEv("annual_leave_cycle_start")} required />
+        </Field>
+        <Field label="Sick Leave Cycle Start" required>
+          <Input className={inputCls} type="date" value={form.sick_leave_cycle_start} onChange={setEv("sick_leave_cycle_start")} required />
+        </Field>
+        <Field label="Custom Annual Leave Days">
+          <Input
+            className={inputCls}
+            type="number"
+            min={21}
+            value={form.custom_annual_leave_days}
+            onChange={(e) => setForm((f) => ({ ...f, custom_annual_leave_days: Number(e.target.value) }))}
+            placeholder="Leave blank for statutory 21 days"
+          />
+        </Field>
+        <Field label="Leave Days Due (Balance)">
           <Input
             className={inputCls}
             type="number"
