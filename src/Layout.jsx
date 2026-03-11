@@ -47,6 +47,12 @@ export default function Layout({ children, currentPageName }) {
               >
                 Labour Law
               </Link>
+              <Link
+                to={createPageUrl("LabourLawAssistant")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${currentPageName === "LabourLawAssistant" ? "bg-red-600 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                AI Assistant
+              </Link>
             </nav>
           </div>
         </div>
