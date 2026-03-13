@@ -25,12 +25,14 @@ const SYSTEM_FIELDS = [
 const TEMPLATE_HEADERS = [
   "Employee_Number", "First_Name", "Last_Name", "Email", "Phone", "ID_Number",
   "Department", "Job_Title", "Employment_Start_Date", "Work_Week_Type",
-  "Annual_Leave_Cycle_Start", "Custom_Annual_Leave_Days",
+  "Annual_Leave_Cycle_Start", "Sick_Leave_Cycle_Start", "Custom_Annual_Leave_Days", "Residential_Address",
+  "Bank_Name", "Branch_Code", "Account_Number", "Next_Of_Kin_Name", "Next_Of_Kin_Relationship", "Next_Of_Kin_Contact",
 ];
 
 const TEMPLATE_SAMPLE = [
   ["EMP001", "Jane", "Doe", "jane@company.com", "0821234567", "9001015009087",
-   "Operations", "Manager", "2023-01-01", "5-day", "2023-01-01", ""],
+   "Operations", "Manager", "2023-01-01", "5-day", "2023-01-01", "2023-01-01", "", "123 Main St",
+   "FNB", "250655", "62012345678", "John Doe", "Spouse", "0831234567"],
 ];
 
 const AUTO_MATCH = {
