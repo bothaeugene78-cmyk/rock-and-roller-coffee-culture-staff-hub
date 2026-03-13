@@ -132,9 +132,51 @@ export default function ImportColumn() {
   const fileRef = useRef();
 
   const downloadTemplate = () => {
+    // Sheet 1: Data
     const ws = XLSX.utils.aoa_to_sheet([TEMPLATE_HEADERS, ...TEMPLATE_SAMPLE]);
+
+    // Column widths
+    ws["!cols"] = TEMPLATE_HEADERS.map(() => ({ wch: 22 }));
+
+    // Sheet 2: Instructions
+    const instructions = [
+      ["Employee Import Template — Instructions"],
+      [""],
+      ["Column", "Required", "Format / Notes"],
+      ["Employee_Number", "No", "Unique identifier e.g. EMP001"],
+      ["First_Name", "YES", "Employee's first name"],
+      ["Last_Name", "YES", "Employee's last name"],
+      ["Email", "No", "Valid email address e.g. jane@company.com"],
+      ["Phone", "YES", "Contact number e.g. 0821234567"],
+      ["ID_Number", "YES", "13-digit SA ID or passport number"],
+      ["Department", "No", "e.g. Operations, Finance, HR"],
+      ["Job_Title", "No", "e.g. Manager, Cashier"],
+      ["Employment_Start_Date", "YES", "YYYY-MM-DD e.g. 2023-01-15"],
+      ["Work_Week_Type", "YES", "Must be exactly: 5-day  OR  6-day"],
+      ["Annual_Leave_Cycle_Start", "YES", "YYYY-MM-DD — start of annual leave cycle"],
+      ["Sick_Leave_Cycle_Start", "YES", "YYYY-MM-DD — start of 36-month sick leave cycle"],
+      ["Custom_Annual_Leave_Days", "No", "Number — only if more than statutory 21 days"],
+      ["Residential_Address", "No", "Full residential address"],
+      ["Bank_Name", "No", "e.g. FNB, Standard Bank, Absa"],
+      ["Branch_Code", "No", "6-digit bank branch code"],
+      ["Account_Number", "No", "Bank account number"],
+      ["Next_Of_Kin_Name", "No", "Full name of emergency contact"],
+      ["Next_Of_Kin_Relationship", "No", "e.g. Spouse, Parent, Sibling"],
+      ["Next_Of_Kin_Contact", "No", "Contact number for next of kin"],
+      [""],
+      ["NOTES:"],
+      ["• Do NOT change column headers — they must match exactly."],
+      ["• Dates must be in YYYY-MM-DD format (e.g. 2023-06-01)."],
+      ["• Work_Week_Type must be '5-day' or '6-day' (no other values accepted)."],
+      ["• Required fields marked YES must not be left blank."],
+      ["• Remove this Instructions sheet before uploading if it causes issues (optional)."],
+    ];
+    const wsInstructions = XLSX.utils.aoa_to_sheet(instructions);
+    wsInstructions["!cols"] = [{ wch: 30 }, { wch: 12 }, { wch: 55 }];
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Employees");
+    XLSX.utils.book_append_sheet(wb, wsInstructions, "Instructions");
     XLSX.writeFile(wb, "employee_import_template.xlsx");
   };
 
