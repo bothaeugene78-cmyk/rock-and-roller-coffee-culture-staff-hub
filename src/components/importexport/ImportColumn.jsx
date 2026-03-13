@@ -56,6 +56,12 @@ const AUTO_MATCH = {
   sick_leave_cycle_start: ["sick_leave_cycle_start", "sick leave cycle"],
   custom_annual_leave_days: ["custom_annual_leave_days", "custom leave", "leave days"],
   residential_address: ["address", "residential_address", "home address"],
+  bank_name: ["bank_name", "bank name", "bank"],
+  branch_code: ["branch_code", "branch code", "branch"],
+  account_number: ["account_number", "account number", "account no", "acc number"],
+  next_of_kin_name: ["next_of_kin_name", "next of kin", "kin name", "emergency contact"],
+  next_of_kin_relationship: ["next_of_kin_relationship", "relationship", "kin relationship"],
+  next_of_kin_contact: ["next_of_kin_contact", "kin contact", "emergency number"],
 };
 
 function autoMap(excelCols) {
