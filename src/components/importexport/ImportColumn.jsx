@@ -20,6 +20,12 @@ const SYSTEM_FIELDS = [
   { key: "sick_leave_cycle_start", label: "Sick Leave Cycle Start", required: true },
   { key: "custom_annual_leave_days", label: "Custom Annual Leave Days" },
   { key: "residential_address", label: "Residential Address" },
+  { key: "bank_name", label: "Bank Name" },
+  { key: "branch_code", label: "Branch Code" },
+  { key: "account_number", label: "Account Number" },
+  { key: "next_of_kin_name", label: "Next of Kin Name" },
+  { key: "next_of_kin_relationship", label: "Next of Kin Relationship" },
+  { key: "next_of_kin_contact", label: "Next of Kin Contact" },
 ];
 
 const TEMPLATE_HEADERS = [
