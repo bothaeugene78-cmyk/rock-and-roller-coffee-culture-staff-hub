@@ -4,22 +4,24 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
-    
+
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { entity_name, entity_id, action, old_values, new_values } = await req.json();
+    const body = await req.json();
 
-    await base44.entities.AuditLog.create({
-      entity_name,
-      entity_id,
-      action,
+    const auditLog = {
+      entity_name: body.entity_name,
+      entity_id: body.entity_id,
+      action: body.action,
       changed_by: user.email,
-      old_values: old_values || null,
-      new_values: new_values || null,
+      old_values: body.old_values || {},
+      new_values: body.new_values || {},
       timestamp: new Date().toISOString()
-    });
+    };
+
+    await base44.entities.AuditLog.create(auditLog);
 
     return Response.json({ success: true });
   } catch (error) {

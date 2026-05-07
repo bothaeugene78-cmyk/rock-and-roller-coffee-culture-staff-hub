@@ -1,58 +1,56 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Activity } from "lucide-react";
 import { format } from "date-fns";
+
+const actionColors = {
+  create: "bg-emerald-100 text-emerald-800",
+  update: "bg-blue-100 text-blue-800",
+  delete: "bg-red-100 text-red-800"
+};
 
 export default function AuditTrail() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadLogs();
+    loadAuditLogs();
   }, []);
 
-  const loadLogs = async () => {
+  const loadAuditLogs = async () => {
     setLoading(true);
-    const data = await base44.entities.AuditLog.list("-timestamp", 100);
-    setLogs(data);
+    const auditLogs = await base44.entities.AuditLog.list("-timestamp", 100);
+    setLogs(auditLogs);
     setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-zinc-950 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <Activity className="w-6 h-6 text-red-500" />
-          <h1 className="text-2xl font-bold text-white">Audit Trail</h1>
-        </div>
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-2xl font-bold text-white mb-6">Audit Trail</h1>
 
         {loading ? (
-          <div className="text-zinc-400">Loading...</div>
+          <p className="text-zinc-400">Loading audit logs...</p>
         ) : (
-          <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-zinc-800 border-b border-zinc-700">
                 <tr>
-                  <th className="text-left px-4 py-3 text-zinc-400 font-medium">Timestamp</th>
-                  <th className="text-left px-4 py-3 text-zinc-400 font-medium">Entity</th>
-                  <th className="text-left px-4 py-3 text-zinc-400 font-medium">Action</th>
-                  <th className="text-left px-4 py-3 text-zinc-400 font-medium">Changed By</th>
+                  <th className="px-4 py-3 text-left text-zinc-300 font-semibold">Timestamp</th>
+                  <th className="px-4 py-3 text-left text-zinc-300 font-semibold">Entity</th>
+                  <th className="px-4 py-3 text-left text-zinc-300 font-semibold">Action</th>
+                  <th className="px-4 py-3 text-left text-zinc-300 font-semibold">Changed By</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-zinc-800/50">
-                    <td className="px-4 py-3 text-zinc-300">
-                      {format(new Date(log.timestamp), "MMM d, yyyy HH:mm")}
+                  <tr key={log.id} className="hover:bg-zinc-800/50 transition-colors">
+                    <td className="px-4 py-3 text-zinc-400">
+                      {format(new Date(log.timestamp), "MMM d, yyyy HH:mm:ss")}
                     </td>
-                    <td className="px-4 py-3 text-zinc-300">{log.entity_name}</td>
+                    <td className="px-4 py-3 text-zinc-300 font-medium">{log.entity_name}</td>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        log.action === 'create' ? 'bg-emerald-900/40 text-emerald-300' :
-                        log.action === 'update' ? 'bg-blue-900/40 text-blue-300' :
-                        'bg-red-900/40 text-red-300'
-                      }`}>
-                        {log.action.toUpperCase()}
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${actionColors[log.action]}`}>
+                        {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-zinc-400">{log.changed_by}</td>
@@ -60,6 +58,9 @@ export default function AuditTrail() {
                 ))}
               </tbody>
             </table>
+            {logs.length === 0 && (
+              <div className="p-8 text-center text-zinc-500">No audit logs found.</div>
+            )}
           </div>
         )}
       </div>
