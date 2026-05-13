@@ -1,0 +1,9 @@
+{
+  "name": "Rock And Roller Coffee Culture Staff Hub",
+  "site": {
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "serveCommand": "npm run dev",
+    "outputDirectory": "./dist"
+  }
+}
