@@ -1,0 +1,64 @@
+{
+  "name": "LeaveBalance",
+  "type": "object",
+  "properties": {
+    "employee": {
+      "type": "string",
+      "description": "Employee ID"
+    },
+    "year": {
+      "type": "number",
+      "description": "Calendar year"
+    },
+    "annual_leave_accrued": {
+      "type": "number",
+      "description": "Total annual leave accrued this cycle"
+    },
+    "annual_leave_taken": {
+      "type": "number",
+      "description": "Annual leave days taken"
+    },
+    "annual_leave_balance": {
+      "type": "number",
+      "description": "Available annual leave (accrued minus taken)"
+    },
+    "family_responsibility_total": {
+      "type": "number",
+      "default": 3,
+      "description": "Total entitlement (3 days, 5 for domestic workers)"
+    },
+    "family_responsibility_taken": {
+      "type": "number",
+      "description": "Family responsibility days used"
+    },
+    "family_responsibility_balance": {
+      "type": "number",
+      "description": "Remaining family responsibility leave"
+    },
+    "sick_leave_cycle_start": {
+      "type": "string",
+      "format": "date",
+      "description": "36-month cycle start date"
+    },
+    "sick_leave_entitlement": {
+      "type": "number",
+      "description": "30 for 5-day week, 36 for 6-day week"
+    },
+    "sick_leave_taken_this_cycle": {
+      "type": "number",
+      "description": "Days used in current 36-month cycle"
+    },
+    "sick_leave_balance": {
+      "type": "number",
+      "description": "Remaining sick leave in current cycle"
+    },
+    "annual_leave_forfeited": {
+      "type": "number",
+      "description": "Days lost due to not taking leave in time"
+    }
+  },
+  "required": [
+    "employee",
+    "year"
+  ]
+}

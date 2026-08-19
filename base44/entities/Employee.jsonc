@@ -1,0 +1,134 @@
+{
+  "name": "Employee",
+  "type": "object",
+  "properties": {
+    "employee_number": {
+      "type": "string",
+      "description": "Unique employee identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "First name"
+    },
+    "surname": {
+      "type": "string",
+      "description": "Last name"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Work email address"
+    },
+    "contact_number": {
+      "type": "string",
+      "description": "Contact number"
+    },
+    "id_number": {
+      "type": "string",
+      "description": "South African ID or passport number"
+    },
+    "department": {
+      "type": "string",
+      "description": "Department"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date employment began"
+    },
+    "work_week_type": {
+      "type": "string",
+      "enum": [
+        "5-day",
+        "6-day"
+      ],
+      "description": "Working week type for leave calculations"
+    },
+    "employment_status": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "On Leave",
+        "Terminated",
+        "Suspended"
+      ],
+      "default": "Active",
+      "description": "Current employment status"
+    },
+    "annual_leave_cycle_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Start date of current annual leave cycle"
+    },
+    "sick_leave_cycle_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Start date of current 36-month sick leave cycle"
+    },
+    "custom_annual_leave_days": {
+      "type": "number",
+      "description": "Custom annual leave days if more than statutory 21 days"
+    },
+    "residential_address": {
+      "type": "string",
+      "description": "Residential address"
+    },
+    "leave_days_due": {
+      "type": "number",
+      "default": 15,
+      "description": "Annual leave days due"
+    },
+    "bank_name": {
+      "type": "string",
+      "description": "Bank name"
+    },
+    "branch_code": {
+      "type": "string",
+      "description": "Bank branch code"
+    },
+    "account_number": {
+      "type": "string",
+      "description": "Bank account number"
+    },
+    "it_number": {
+      "type": "string",
+      "description": "SARS IT Number (optional)"
+    },
+    "next_of_kin_name": {
+      "type": "string",
+      "description": "Next of kin full name"
+    },
+    "next_of_kin_relationship": {
+      "type": "string",
+      "description": "Relationship to next of kin"
+    },
+    "next_of_kin_contact": {
+      "type": "string",
+      "description": "Next of kin contact number"
+    },
+    "termination_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of termination"
+    },
+    "termination_reason": {
+      "type": "string",
+      "description": "Reason for termination"
+    }
+  },
+  "required": [
+    "name",
+    "surname",
+    "id_number",
+    "contact_number",
+    "start_date",
+    "work_week_type",
+    "employment_status",
+    "annual_leave_cycle_start",
+    "sick_leave_cycle_start"
+  ]
+}

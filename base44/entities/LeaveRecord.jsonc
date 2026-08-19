@@ -1,0 +1,90 @@
+{
+  "name": "LeaveRecord",
+  "type": "object",
+  "properties": {
+    "employee": {
+      "type": "string",
+      "description": "Employee requesting leave (Employee ID)"
+    },
+    "leave_type": {
+      "type": "string",
+      "enum": [
+        "Annual",
+        "Family Responsibility",
+        "Sick",
+        "Unpaid",
+        "Maternity",
+        "Parental"
+      ],
+      "description": "Type of leave"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "First day of leave"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Last day of leave"
+    },
+    "days_requested": {
+      "type": "number",
+      "description": "Total working days requested"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for leave"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Approved",
+        "Rejected",
+        "Cancelled",
+        "Withdrawn"
+      ],
+      "default": "Pending",
+      "description": "Current status of leave application"
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Manager who approved/rejected (Employee ID)"
+    },
+    "approved_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When decision was made"
+    },
+    "approval_notes": {
+      "type": "string",
+      "description": "Manager comments"
+    },
+    "medical_certificate": {
+      "type": "string",
+      "description": "Medical certificate URL for sick leave >2 days"
+    },
+    "proof_document": {
+      "type": "string",
+      "description": "Death/birth certificate URL for family responsibility leave"
+    },
+    "emergency_contact": {
+      "type": "string",
+      "description": "Contact during leave"
+    },
+    "handover_notes": {
+      "type": "string",
+      "description": "Work handover details"
+    }
+  },
+  "required": [
+    "employee",
+    "leave_type",
+    "start_date",
+    "end_date",
+    "days_requested",
+    "reason",
+    "status"
+  ]
+}
